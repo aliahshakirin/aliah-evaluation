@@ -1,12 +1,22 @@
 import logo from './logo.svg';
 import React, { useState, useEffect } from "react";
 import './App.css';
+import axios from 'axios';
 
 function App() {
-  useEffect(() => {
-    fetch("/hello")
-     .then((response) => console.log(response.json()));
-   }, []);
+  const [cardnum, setCardnum] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post("/card/validate", {
+      cardnum
+    }).then((response) => {
+      console.log(response.data)
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+  
   
   return (
     <div className="App">
@@ -16,15 +26,20 @@ function App() {
       </div>
     
       <div className="info">
-        <form>
+        <form onSubmit={handleSubmit}>
           <label for="cardnum">Card number</label>
-          <input type="text" id="cardnum"/><br/>
+          <input 
+            type="text" 
+            id="cardnum" 
+            placeholder="1234 5678 9876 5432"
+            onChange={(e) => setCardnum(e.target.value)}
+          /><br/>
           <label for="cvv">CVV</label>
-          <input type="text" id="cvv"/>
-          <label for="month">Exp month</label>
-          <input type="number" id="month"/>
+          <input type="text" id="cvv" placeholder="000"/>
+          <label for="month">Exp date</label>
+          <input type="text" id="month" placeholder="00"/>
           <label for="year">Exp year</label>
-          <input type="number" id="year"/><br/>
+          <input type="text" id="year" placeholder="00"/><br/>
           <input type="submit" value="Submit"></input>
         </form>
       </div>
