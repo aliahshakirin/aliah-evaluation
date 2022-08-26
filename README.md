@@ -1,7 +1,7 @@
 # Solution for LevelUp take-home assignment
 
-Backend API server is made using flask-restx
-Frontend is made using ReactJS
+* Backend API server is made using flask-restx 
+* Frontend is made using ReactJS 
 
 ## Installation
 1. Clone the repo
