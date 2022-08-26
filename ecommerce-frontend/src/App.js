@@ -10,7 +10,25 @@ function App() {
   
   return (
     <div className="App">
-      <h1>My ecommerce website</h1>
+      <div className="header">
+        <h1>My ecommerce website</h1>
+        <h2>Enter your payment details</h2>
+      </div>
+    
+      <div className="info">
+        <form>
+          <label for="cardnum">Card number</label>
+          <input type="text" id="cardnum"/><br/>
+          <label for="cvv">CVV</label>
+          <input type="text" id="cvv"/>
+          <label for="month">Exp month</label>
+          <input type="number" id="month"/>
+          <label for="year">Exp year</label>
+          <input type="number" id="year"/><br/>
+          <input type="submit" value="Submit"></input>
+        </form>
+      </div>
+      
     </div>
   );
 }
