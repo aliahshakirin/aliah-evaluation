@@ -7,6 +7,10 @@ api = Api(app)
 @api.route('/hello')
 class HelloWorld(Resource):
     def get(self):
+        """
+        A trivial endpoint to see if the server is running.
+        Returns hello world
+        """
         return {'hello': 'world'}
 
 if __name__ == '__main__':
