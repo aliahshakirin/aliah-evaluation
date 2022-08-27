@@ -1,7 +1,16 @@
 # Solution for LevelUp take-home assignment
 
 * Backend API server is made using flask-restx 
-* Frontend is made using ReactJS 
+* Frontend is made using ReactJS
+
+## Overview
+After inputting card details in the form, data is send to backend using POST API call. POST ensure card details are send through body of API call. API server get the data, and perform validation algorithm which as follows:
+* Check card expiry date
+* Check CVV digit length
+* Check PAN digit length <br/>
+
+If validation algorithm fail at any step, it will stop continuing with the validation algorithm and raise exceptions. If validation algorithm reach the end, api will send success response.
+Frontend server will use the success or failed response, and render a message at the bottom indicating if card is valid or not.
 
 ## Installation
 1. Clone the repo
