@@ -14,8 +14,6 @@ card_fields = api.model('Card', {
     'cvv': fields.String
 })
 
-# present time in the format mm/yyyy
-# today = datetime.today().strftime("%m/%Y")
 
 @api.route('/hello')
 class HelloWorld(Resource):
@@ -30,39 +28,53 @@ class HelloWorld(Resource):
 class ValidateCard(Resource):
     @api.expect(card_fields)
     def post(self):
+        """
+        Check if card details provided are valid.
+        """
         req_data = request.json
         card_str = req_data['cardnum'].replace(" ", "")
 
-        # check card exp date
-        year, mth = req_data['expdate'].split('-')
-        if (datetime.now().year > int(year)):
-            print("expired")
-        elif (datetime.now().year == int(year) and datetime.now().month >= int(mth)):
-            print("expired")
-        else:
-            print("not expired")
+        # 1 check card exp date -- after PRESENT time
+
+        if ('-' in req_data['expdate']):
+            year, mth = req_data['expdate'].split('-')
         
+            if (datetime.now().year > int(year)):
+                raise (wz.NotAcceptable("Card has expired"))
+            elif (datetime.now().year == int(year) and datetime.now().month >= int(mth)):
+                raise (wz.NotAcceptable("Card has expired"))
+            else:
+                print("Exp date valid")
+                # check next requirement
+        
+        # 2 check CVV digit length
         # check if American express card
         cvv_str = req_data['cvv']
         startNum = card_str[0:2]
         if (startNum == '34' or startNum == '37'):
             # American express, must be 4 digits long
-            if (len(cvv_str) == 4):
-                print("valid cvv")
+            if (len(cvv_str) != 4):
+                raise (wz.NotAcceptable("Invalid CVV"))
             else:
-                print("invalid cvv")
+                print("Valid CVV")
+                # check next requirement
         else:
             # NOT American express, must be 3 digits long
-            if (len(cvv_str) == 3):
-                print("valid cvv")
+            if (len(cvv_str) != 3):
+                raise (wz.NotAcceptable("Invalid CVV"))
             else:
-                print("invalid cvv")
+                print("Valid CVV")
+                # check next requirement
 
-        # check PAN
-        if (13 <= len(card_str) <= 19):
-            return "success."
-        else:
+        # 3 check PAN btwn 16 -19 digits
+        if (len(card_str) < 16 and len(card_str) > 19):
             raise (wz.NotAcceptable("Invalid card number"))
+        else:
+            print("Card number valid")
+        
+        # if 1, 2, 3 pass -> return success
+        # either one not pass -> not acceptable
+        return "success."
 
 if __name__ == '__main__':
     app.run(debug=True)
