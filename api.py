@@ -37,7 +37,11 @@ class ValidateCard(Resource):
         # 1 check card exp date -- after PRESENT time
         if ('-' in req_data['expdate']):
             year, mth = req_data['expdate'].split('-')
-        
+
+            # this will check if user put in reverse date format
+            if (len(year) != 4):
+                raise (wz.NotAcceptable("Wrong date format-inverted"))
+
             if (datetime.now().year > int(year)):
                 raise (wz.NotAcceptable("Card has expired"))
             elif (datetime.now().year == int(year) and datetime.now().month >= int(mth)):
@@ -45,6 +49,8 @@ class ValidateCard(Resource):
             else:
                 print("Exp date valid")
                 # check next requirement
+        else:
+            raise (wz.NotAcceptable("Wrong date format"))
         
         # 2 check CVV digit length
         # check if American express card
