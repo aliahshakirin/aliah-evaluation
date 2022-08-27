@@ -48,15 +48,15 @@ function App() {
         <form onSubmit={handleSubmit}>
           <label for="cardnum">Card number </label>
           <input 
-            type="text" 
+            type="number"
             id="cardnum" 
-            placeholder="1234 5678 9876 5432"
+            placeholder="123456"
             required
             onChange={(e) => setCardnum(e.target.value)}
           /><br/>
           <label for="cvv">CVV</label>
           <input 
-            type="text" 
+            type="number"
             id="cvv" 
             placeholder="000"
             required
@@ -66,7 +66,7 @@ function App() {
           <input 
             type="month" 
             id="month" 
-            placeholder="00"
+            placeholder="0000-00"
             required
             onChange={(e) => setExpdate(e.target.value)}
           />

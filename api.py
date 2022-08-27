@@ -35,7 +35,6 @@ class ValidateCard(Resource):
         card_str = req_data['cardnum'].replace(" ", "")
 
         # 1 check card exp date -- after PRESENT time
-
         if ('-' in req_data['expdate']):
             year, mth = req_data['expdate'].split('-')
         
@@ -67,9 +66,10 @@ class ValidateCard(Resource):
                 # check next requirement
 
         # 3 check PAN btwn 16 -19 digits
-        if (len(card_str) < 16 and len(card_str) > 19):
+        if (len(card_str) < 16 or len(card_str) > 19):
             raise (wz.NotAcceptable("Invalid card number"))
         else:
+            print(len(card_str))
             print("Card number valid")
         
         # if 1, 2, 3 pass -> return success
